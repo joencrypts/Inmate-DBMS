@@ -1,0 +1,264 @@
+/* Professional Theme for Inmate Management System */
+
+:root {
+  --primary-color: #ff8c00; /* Orange */
+  --secondary-color: #ffd700; /* Yellow */
+  --accent-color: #ffa500; /* Orange */
+  --background-color: #121212; /* Dark background */
+  --card-bg: rgba(30, 30, 30, 0.8);
+  --text-color: #ffffff;
+  --text-secondary: #cccccc;
+  --border-color: rgba(255, 140, 0, 0.3);
+  --neon-glow: 0 0 10px rgba(255, 140, 0, 0.5), 0 0 20px rgba(255, 140, 0, 0.3);
+  --neon-glow-secondary: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3);
+  --neon-glow-accent: 0 0 10px rgba(255, 165, 0, 0.5), 0 0 20px rgba(255, 165, 0, 0.3);
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+}
+
+/* 3D Card Tiles */
+.tile-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  animation: tileAppear 0.5s ease-out forwards;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.tile-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  border-color: var(--primary-color);
+}
+
+.tile-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  border-radius: 8px;
+}
+
+.tile-card:hover::before {
+  opacity: 0.1;
+}
+
+/* Professional Border Animation */
+.neon-border {
+  position: relative;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.neon-border::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
+  z-index: -1;
+  border-radius: 9px;
+  animation: neonBorder 3s linear infinite;
+  background-size: 400% 400%;
+  opacity: 0.3;
+}
+
+@keyframes neonBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Professional Button Animation */
+.btn-3d {
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+  color: var(--text-color);
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transform-style: preserve-3d;
+  transform: translateZ(0);
+}
+
+.btn-3d:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+}
+
+.btn-3d:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Form Styling */
+.form-control {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  color: var(--text-color);
+  padding: 10px 15px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 10px rgba(255, 140, 0, 0.2);
+  outline: none;
+}
+
+/* Navbar Styling */
+.navbar {
+  background: rgba(18, 18, 18, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-brand {
+  position: relative;
+  overflow: hidden;
+}
+
+.navbar-brand::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  opacity: 0.7;
+}
+
+.navbar-brand:hover::after {
+  transform: translateX(0);
+}
+
+/* Animation for tiles appearing */
+@keyframes tileAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Login/Register Form Styling */
+.auth-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  background: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.auth-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 140, 0, 0.05) 0%, rgba(18, 18, 18, 0) 70%);
+  animation: rotateBg 10s linear infinite;
+}
+
+@keyframes rotateBg {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Table Styling */
+.table {
+  background: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+}
+
+.table thead th {
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+  color: var(--text-color);
+  border: none;
+  padding: 15px;
+  font-weight: 500;
+}
+
+.table tbody tr {
+  transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+  transform: scale(1.01);
+}
+
+/* Footer Styling */
+footer {
+  background: rgba(18, 18, 18, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border-color);
+  padding: 30px 0;
+  margin-top: 50px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .tile-card {
+    margin: 10px;
+  }
+  
+  .auth-container {
+    margin: 20px;
+    padding: 20px;
+  }
+} 

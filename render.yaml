@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: prison-management-system
+    env: node
+    buildCommand: |
+      apt-get update -y
+      apt-get install -y php php-cli php-mysql php-mbstring php-xml php-curl php-json php-zip php-gd php-pdo php-pdo-mysql php-session
+      php -v
+      yarn install
+    startCommand: node server.js
+    envVars:
+      - key: DB_HOST
+        value: yamabiko.proxy.rlwy.net
+      - key: DB_PORT
+        value: 30661
+      - key: DB_USER
+        value: root
+      - key: DB_PASS
+        sync: false
+      - key: DB_NAME
+        value: railway
+      - key: PORT
+        value: 10000
+      - key: NODE_ENV
+        value: production
+      - key: PHP_DISPLAY_ERRORS
+        value: 0
+      - key: PHP_ERROR_REPORTING
+        value: E_ALL & ~E_DEPRECATED & ~E_STRICT
+    healthCheckPath: /index.php
+    autoDeploy: true
+    disk:
+      name: storage
+      mountPath: /storage
+      sizeGB: 1 

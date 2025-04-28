@@ -25,6 +25,13 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     gd \
     zip
 
+# Configure PHP
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
+    && echo "memory_limit=256M" >> "$PHP_INI_DIR/php.ini" \
+    && echo "upload_max_filesize=64M" >> "$PHP_INI_DIR/php.ini" \
+    && echo "post_max_size=64M" >> "$PHP_INI_DIR/php.ini" \
+    && echo "max_execution_time=600" >> "$PHP_INI_DIR/php.ini"
+
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

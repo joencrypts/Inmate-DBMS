@@ -55,14 +55,23 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod -R 777 storage
 
-# Initialize MySQL and create database
-RUN service mysql start \
-    && mysql -e "CREATE DATABASE IF NOT EXISTS dbms_prison;" \
-    && mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';" \
-    && mysql -e "FLUSH PRIVILEGES;"
+# Create storage directory and set permissions
+RUN mkdir -p /var/www/html/storage \
+    && chown -R www-data:www-data /var/www/html/storage \
+    && chmod -R 775 /var/www/html/storage
 
 # Expose port
 EXPOSE 10000
 
-# Start MySQL and PHP server
-CMD service mysql start && php -S 0.0.0.0:10000 -t . router.php 
+# Create startup script
+RUN echo '#!/bin/bash\n\
+mysqld_safe --datadir=/var/lib/mysql &\n\
+sleep 10\n\
+mysql -e "CREATE DATABASE IF NOT EXISTS dbms_prison;"\n\
+mysql -e "ALTER USER '\''root'\''@'\''localhost'\'' IDENTIFIED WITH mysql_native_password BY '\'''\'';"\n\
+mysql -e "FLUSH PRIVILEGES;"\n\
+php -S 0.0.0.0:10000 -t . router.php\n\
+' > /start.sh && chmod +x /start.sh
+
+# Start the application
+CMD ["/start.sh"] 

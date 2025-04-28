@@ -5,9 +5,15 @@ services:
     dockerfilePath: ./Dockerfile
     envVars:
       - key: DB_HOST
-        value: localhost
+        fromService:
+          type: pserv
+          name: mysql
+          property: host
       - key: DB_PORT
-        value: 3306
+        fromService:
+          type: pserv
+          name: mysql
+          property: port
       - key: DB_USER
         value: root
       - key: DB_PASS
@@ -27,4 +33,20 @@ services:
     disk:
       name: storage
       mountPath: /storage
-      sizeGB: 1 
+      sizeGB: 1
+
+  - type: pserv
+    name: mysql
+    env: docker
+    plan: free
+    disk:
+      name: mysql
+      mountPath: /var/lib/mysql
+      sizeGB: 1
+    envVars:
+      - key: MYSQL_DATABASE
+        value: dbms_prison
+      - key: MYSQL_ROOT_PASSWORD
+        generateValue: true
+      - key: MYSQL_ROOT_HOST
+        value: "%" 

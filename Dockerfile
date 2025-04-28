@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libfreetype6-dev \
     default-mysql-client \
+    default-mysql-server \
     zip \
     unzip \
     && rm -rf /var/lib/apt/lists/*
@@ -54,8 +55,14 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod -R 777 storage
 
+# Initialize MySQL and create database
+RUN service mysql start \
+    && mysql -e "CREATE DATABASE IF NOT EXISTS dbms_prison;" \
+    && mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';" \
+    && mysql -e "FLUSH PRIVILEGES;"
+
 # Expose port
 EXPOSE 10000
 
-# Start PHP built-in server
-CMD php -S 0.0.0.0:10000 -t . router.php 
+# Start MySQL and PHP server
+CMD service mysql start && php -S 0.0.0.0:10000 -t . router.php 

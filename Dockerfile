@@ -41,9 +41,11 @@ WORKDIR /var/www/html
 # Copy application files
 COPY . .
 
-# Install dependencies and optimize
-RUN composer install --no-interaction --no-dev --optimize-autoloader \
-    && composer dump-autoload --optimize
+# Install dependencies and optimize (if composer.json exists)
+RUN if [ -f "composer.json" ]; then \
+    composer install --no-interaction --no-dev --optimize-autoloader || true; \
+    composer dump-autoload --optimize || true; \
+    fi
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \

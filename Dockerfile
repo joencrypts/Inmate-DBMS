@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.1-cli
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -8,8 +8,10 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip \
-    && rm -rf /var/lib/apt/lists/*
+    unzip
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
@@ -27,23 +29,8 @@ COPY . .
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# Configure Apache
-RUN a2enmod rewrite
-COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
-
-# Create directory for Apache configuration
-RUN mkdir -p /etc/apache2/sites-enabled
-
-# Enable the site
-RUN a2ensite 000-default.conf
-
-# Create a simple index.php if it doesn't exist
-RUN if [ ! -f /var/www/html/index.php ]; then \
-    echo '<?php phpinfo(); ?>' > /var/www/html/index.php; \
-    fi
-
 # Expose port
-EXPOSE 80
+EXPOSE 10000
 
-# Start Apache in foreground
-CMD ["apache2-ctl", "-D", "FOREGROUND"] 
+# Start PHP built-in server
+CMD php -S 0.0.0.0:10000 -t . router.php 

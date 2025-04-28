@@ -4,13 +4,17 @@ services:
     env: node
     buildCommand: |
       apt-get update -y
-      apt-get install -y software-properties-common
+      apt-get install -y software-properties-common apache2
       add-apt-repository -y ppa:ondrej/php
       apt-get update -y
-      apt-get install -y php8.1 php8.1-cli php8.1-mysql php8.1-mbstring php8.1-xml php8.1-curl php8.1-json php8.1-zip php8.1-gd php8.1-pdo php8.1-pdo-mysql php8.1-session
+      apt-get install -y php8.1 php8.1-cli php8.1-mysql php8.1-mbstring php8.1-xml php8.1-curl php8.1-json php8.1-zip php8.1-gd php8.1-pdo php8.1-pdo-mysql php8.1-session libapache2-mod-php8.1
+      a2enmod php8.1
+      a2enmod rewrite
+      cp apache.conf /etc/apache2/sites-available/000-default.conf
       php -v
       yarn install
-    startCommand: node server.js
+    startCommand: |
+      apache2ctl -D FOREGROUND
     envVars:
       - key: DB_HOST
         value: yamabiko.proxy.rlwy.net
